@@ -1,21 +1,18 @@
-import cv2
+import numpy as np
+import cv2 as cv
 
-cap = cv2.VideoCapture('videos\dataset_limpio_amaia.mp4')
-
-if (cap.isOpened()== False): 
-    print("Error opening video stream or file")
-
-fps = 20
-
-#calculate the interval between frame. 
-interval = int(1000/fps) 
-print("FPS: ",fps, ", interval: ", interval)
-# Read the video
 cont = 0
-while(cap.isOpened()):
+cap = cv.VideoCapture('videos\dataset_limpio_jon.mp4')
+while cap.isOpened():
     ret, frame = cap.read()
-    if ret == True:
-        cv2.imwrite(f'Output/1-{cont}.jpeg',frame)
-        cont += 1
-
+    # if frame is read correctly ret is True
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    cv.imshow('frame', frame)
+    cv.imwrite(f'Output-Jon/1-{cont}.jpg', frame)
+    if cv.waitKey(1) == ord('q'):
+        break
+    cont += 1
 cap.release()
+cv.destroyAllWindows()
